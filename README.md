@@ -60,3 +60,86 @@ python scrape_docs.py \
   --raw-json-name travelpay_demo.raw.json \
   --json-name travelpay_demo.json \
   --md-name travelpay_demo.md
+````
+
+### 2) Convert processed JSON to OpenAPI 3.1
+
+`scripts/covert.py`
+
+Reads the processed JSON and emits an OpenAPI 3.1 spec.
+
+Example:
+
+```bash
+python scripts/covert.py \
+  --in  docs/travelpay_demo.json \
+  --out docs/openapi.plugin.yaml
+```
+
+If you want JSON output:
+
+```bash
+python scripts/covert.py \
+  --in  docs/travelpay_demo.json \
+  --out docs/openapi.plugin.json
+```
+
+## OpenAPI output notes
+
+The generated OpenAPI file intentionally has:
+
+* `servers: []`
+* `paths: {}`
+
+All useful material is under `components.schemas`, including:
+
+* `ZpPaymentInitOptions` (input parameters for `$.zpPayment(options)`)
+* `ZpPaymentResultMode0or2` (return payload for mode 0/2)
+* `ZpPaymentResultMode1` (return payload for mode 1)
+* `ZpPaymentErrorCode` (error codes, including wildcard families like `E02-*`)
+
+It also includes `x-javascript-plugin` metadata with assets and a code sample.
+
+## GitHub Actions automation
+
+Workflow file:
+
+* `.github/workflows/update-travelpay-demo.yml`
+
+What it does:
+
+1. Checks out the repo
+2. Installs Python deps (`requests`, `beautifulsoup4`)
+3. Runs `scrape_docs.py` to produce docs outputs
+4. Runs `scripts/covert.py` to produce `docs/openapi.plugin.yaml`
+5. Commits and pushes changes if anything under `docs/` changed (including new files)
+
+The workflow runs:
+
+* Weekly (cron)
+* Manually (workflow_dispatch)
+
+## Local development
+
+Requirements:
+
+* Python 3.11+
+* pip packages:
+
+  * `requests`
+  * `beautifulsoup4`
+
+Install:
+
+```bash
+pip install requests beautifulsoup4
+```
+
+Run the pipeline:
+
+```bash
+python scrape_docs.py --out-dir docs --raw-json-name travelpay_demo.raw.json --json-name travelpay_demo.json --md-name travelpay_demo.md
+python scripts/covert.py --in docs/travelpay_demo.json --out docs/openapi.plugin.yaml
+```
+```
+```
