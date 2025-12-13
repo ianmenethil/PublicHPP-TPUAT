@@ -41,22 +41,39 @@ jobs:
             --json-name travelpay_demo.json \
             --md-name travelpay_demo.md
 
-      - name: Detect changes
-        id: changes
+      - name: Generate OpenAPI (schema container)
         run: |
-          git status --porcelain
-          if git diff --quiet -- docs/travelpay_demo.raw.json docs/travelpay_demo.json docs/travelpay_demo.md; then
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-          else
+          python convert.py \
+            --in  docs/travelpay_demo.json \
+            --out docs/openapi.plugin.yaml
+
+      - name: Detect changes (including untracked)
+        id: changes
+        shell: bash
+        run: |
+          echo "Git status (docs/):"
+          git status --porcelain docs/ || true
+
+          if [ -n "$(git status --porcelain docs/)" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit and push
         if: steps.changes.outputs.has_changes == 'true'
+        shell: bash
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/travelpay_demo.raw.json docs/travelpay_demo.json docs/travelpay_demo.md
+          git add docs/travelpay_demo.raw.json docs/travelpay_demo.json docs/travelpay_demo.md docs/openapi.plugin.yaml
+
+          # Avoid failing if nothing staged for some reason
+          if git diff --cached --quiet; then
+            echo "Nothing staged to commit."
+            exit 0
+          fi
+
           git commit -m "docs: refresh TravelPay demo extract"
           git push
