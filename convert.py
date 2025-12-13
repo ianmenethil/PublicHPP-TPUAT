@@ -14,7 +14,7 @@ Output:
   --out docs/openapi.plugin.yaml   (YAML)  OR
   --out docs/openapi.plugin.json   (JSON) if output filename ends with .json
 
-No external dependencies.
+No external dependencies (no PyYAML). Includes a small, correct YAML emitter.
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 # ---------------------------
-# Minimal YAML emitter
+# Minimal YAML emitter (correct indentation)
 # ---------------------------
 
 _SAFE_KEY_RE = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -63,18 +63,22 @@ def _yaml_scalar(v: Any) -> str:
 
 
 def yaml_dump(obj: Any, indent: int = 0) -> str:
+    """
+    YAML dumper for a subset of YAML used here:
+    - dicts, lists, scalars
+    - multiline strings as block scalars '|'
+    """
     lines: List[str] = []
 
-    def emit(o: Any, ind: int, key_prefix: Optional[str] = None) -> None:
+    def emit(o: Any, ind: int) -> None:
         sp = " " * ind
 
         if isinstance(o, dict):
-            if key_prefix is not None:
-                lines.append(f"{sp}{key_prefix}:")
             for k, v in o.items():
                 kk = _yaml_key(str(k))
-                if isinstance(v, (dict, list)):
-                    emit(v, ind, kk)
+                if isinstance(v, dict) or isinstance(v, list):
+                    lines.append(f"{sp}{kk}:")
+                    emit(v, ind + 2)
                 elif isinstance(v, str) and "\n" in v:
                     lines.append(f"{sp}{kk}: |")
                     for ln in v.splitlines():
@@ -84,8 +88,6 @@ def yaml_dump(obj: Any, indent: int = 0) -> str:
             return
 
         if isinstance(o, list):
-            if key_prefix is not None:
-                lines.append(f"{sp}{key_prefix}:")
             for item in o:
                 if isinstance(item, dict):
                     lines.append(f"{sp}-")
@@ -101,10 +103,8 @@ def yaml_dump(obj: Any, indent: int = 0) -> str:
                     lines.append(f"{sp}- {_yaml_scalar(item)}")
             return
 
-        if key_prefix is not None:
-            lines.append(f"{sp}{key_prefix}: {_yaml_scalar(o)}")
-        else:
-            lines.append(f"{sp}{_yaml_scalar(o)}")
+        # scalar
+        lines.append(f"{sp}{_yaml_scalar(o)}")
 
     emit(obj, indent)
     return "\n".join(lines) + "\n"
@@ -202,7 +202,7 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
     meta = (doc.get("metadata") or {}) if isinstance(doc, dict) else {}
     sections = (doc.get("sections") or {}) if isinstance(doc, dict) else {}
 
-    # Be tolerant: some older JSON formats might store code_sample as a string.
+    # Be tolerant: some formats store code_sample as a string.
     cs = sections.get("code_sample")
     code_sample_text = ""
     stylesheet = None
@@ -212,18 +212,23 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
         code_sample_text = cs.get("code") or ""
         assets = cs.get("assets") or {}
         if isinstance(assets, dict):
-            stylesheet = (assets.get("stylesheet") or {}).get("href") if isinstance(assets.get("stylesheet"), dict) else None
-            javascript = (assets.get("javascript") or {}).get("href") if isinstance(assets.get("javascript"), dict) else None
+            ss = assets.get("stylesheet")
+            js = assets.get("javascript")
+            if isinstance(ss, dict):
+                stylesheet = ss.get("href")
+            if isinstance(js, dict):
+                javascript = js.get("href")
     elif isinstance(cs, str):
         code_sample_text = cs
 
     extracted_at = meta.get("extracted_at") or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     # ---- Input parameters -> init options schema
-    input_rows = ((sections.get("input_parameters") or {}).get("rows") or []) if isinstance(sections.get("input_parameters"), dict) else []
+    ip = sections.get("input_parameters") if isinstance(sections.get("input_parameters"), dict) else {}
+    input_rows = (ip.get("rows") or []) if isinstance(ip, dict) else []
+
     init_props: Dict[str, Any] = {}
     required: List[str] = []
-
     needs_customer_and_amount_if_mode_0_or_2 = False
     timestamp_alias_present = False
 
@@ -281,7 +286,7 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
 
         init_props[name] = prop
 
-    # Allow alias if only one exists
+    # Add alias if only timestamp exists in table (code sample often uses timeStamp)
     if "timeStamp" not in init_props and "timestamp" in init_props:
         init_props["timeStamp"] = {
             **_iso_timestamp_schema(),
@@ -289,6 +294,7 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
         }
         timestamp_alias_present = True
 
+    # Remove timestamp fields from required list; enforce via oneOf
     required = [r for r in required if r not in {"timestamp", "timeStamp"}]
 
     init_schema: Dict[str, Any] = {
@@ -312,8 +318,9 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
         init_schema["allOf"] = all_of
 
     # ---- Return parameters -> result schemas
-    ret = sections.get("return_parameters") if isinstance(sections.get("return_parameters"), dict) else {}
-    return_tables = (ret.get("tables") or []) if isinstance(ret, dict) else []
+    rp = sections.get("return_parameters") if isinstance(sections.get("return_parameters"), dict) else {}
+    return_tables = (rp.get("tables") or []) if isinstance(rp, dict) else []
+
     mode0_rows: List[Dict[str, Any]] = []
     mode1_rows: List[Dict[str, Any]] = []
 
@@ -373,8 +380,8 @@ def build_openapi(doc: Dict[str, Any]) -> Dict[str, Any]:
     res1_schema = build_result_schema(mode1_rows, "Result payload returned for mode 1 (tokenisation).")
 
     # ---- Error codes
-    err = sections.get("error_codes") if isinstance(sections.get("error_codes"), dict) else {}
-    err_rows = (err.get("rows") or []) if isinstance(err, dict) else []
+    ec = sections.get("error_codes") if isinstance(sections.get("error_codes"), dict) else {}
+    err_rows = (ec.get("rows") or []) if isinstance(ec, dict) else []
 
     one_of: List[Dict[str, Any]] = []
     for r in err_rows:
