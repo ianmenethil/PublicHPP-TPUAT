@@ -1,0 +1,607 @@
+{
+  "metadata": {
+    "url": "https://payuat.travelpay.com.au/demo/",
+    "extracted_at": "2025-12-13T11:02:28.448031Z",
+    "sections": [
+      "Code Sample",
+      "Input Parameters",
+      "Return Parameters",
+      "Error Codes"
+    ],
+    "html_sha256": "e7b9966c830d68c31a2f641f4423ba3b56df9fe8db4300143552e4337fce9879"
+  },
+  "sections": {
+    "code_sample": {
+      "heading": "Code Sample",
+      "assets": {
+        "stylesheet": {
+          "href": "https://cdn.b2bpay.com.au/css/zenpay.payment.css",
+          "display": "https://cdn.<<PROGRAM DOMAIN>>.com.au/css/zenpay.payment.css"
+        },
+        "javascript": {
+          "href": "https://cdn.b2bpay.com.au/js/zenpay.payment.js",
+          "display": "https://cdn.<<PROGRAM DOMAIN>>.com.au/js/zenpay.payment.js"
+        }
+      },
+      "code": "var payment = $.zpPayment({\n    url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',\n    merchantCode: '<<MERCHANT-CODE>>',\n    apiKey: '<<API-KEY>>',\n    fingerprint: '<<FINGERPRINT>>',\n    redirectUrl: '<<Your Redirect URL>>',\n    mode: 0,\n    displayMode: 0,\n    customerName: 'Customer Name',\n    customerReference: 'Reference 1',\n    paymentAmount: 100.00,\n    timeStamp: '<<TIMESTAMP>>'\n});\nvar result = payment.init();",
+      "notes": [
+        "Include the following in your code",
+        "The implementation depends on jQuery version 3.4.1 and requires jQuery to be included in your code.",
+        "Execute the following jQuery code on the click of your ”Pay Now” button. PROGRAM DOMAIN , PROGRAM SUB-DOMAIN , and API-KEY will be provided by Zenith Payments. ( Note that these will be different for each environment i.e. Live and UAT ) For FINGERPRINT refer to the parameter details below."
+      ]
+    },
+    "input_parameters": {
+      "heading": "Input Parameters",
+      "headers": [
+        "Field Name",
+        "Data Type",
+        "Conditional",
+        "Remarks"
+      ],
+      "rows": [
+        {
+          "Field Name": "url",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "Plugin access url. We strongly recommend v5 integration."
+        },
+        {
+          "Field Name": "merchantCode",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "As provided by Zenith."
+        },
+        {
+          "Field Name": "apiKey",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "As provided by Zenith"
+        },
+        {
+          "Field Name": "fingerprint",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "The Fingerprint is a SHA3-512 (v5), SHA512 (v4) or SHA1 hash (v3) of the fields in the following order with a pipe (|) as a separator.\nCredentials provided by Zenith Payments are case sensitive.\napiKey|userName|password|mode|paymentAmount|merchantUniquePaymentId|timestamp\napiKey: refer apiKey parameter\nuserName: provided by Zenith Payments\npassword: provided by Zenith Payments\nmode: refer mode parameter\npaymentAmount: provide payment amount in cents without symbol. e.g. for $150.53 pass 15053. Pass 0 when mode is 2.\nmerchantUniquePaymentId: refer merchantUniquePaymentId parameter\ntimestamp: provide current datetime in UTC ISO 8601 format as timestamp. format: yyyy-MM-ddTHH:mm:ss\nSHA3-512 (applicable for v5) - To generate fingerprint for this page you can use\nonline SHA3-512 generator>.\nSHA512 (applicable for v4) - To generate fingerprint for this page you can use\nonline SHA512 generator.\nSHA1 (applicable for v3) - To generate fingerprint for this page you can use\nonline SHA1 generator.\nFor methods of generating a SHA1 hash (applicable for v3) in your language refer\nthis web site."
+        },
+        {
+          "Field Name": "redirectUrl",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "The page will redirect to this URL with the result in the query string. Refer the return parameters section below."
+        },
+        {
+          "Field Name": "redirectOnError",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "If this is set to true, all validation and processing errors are returned part of the redirect url. Default is 'false'."
+        },
+        {
+          "Field Name": "mode",
+          "Data Type": "int",
+          "Conditional": "Optional",
+          "Remarks": "Must be one of the following three values\n0 - Make Payment\n1 - Tokenise\n2 - Custom Payment\n3 - Preauthorization\nDefaults to 0 if not provided."
+        },
+        {
+          "Field Name": "displayMode",
+          "Data Type": "int",
+          "Conditional": "Optional",
+          "Remarks": "Must be one of the following two values\n0 - Default (Modal)\n1 - Redirect Url\nDefaults to 0 if not provided.\nGoogle Pay and Apple Pay works if Modal or Redirect Url with iframe is used."
+        },
+        {
+          "Field Name": "customerName",
+          "Data Type": "string",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2."
+        },
+        {
+          "Field Name": "CustomerNameLabel",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Custom label to override default customer name display text"
+        },
+        {
+          "Field Name": "customerReference",
+          "Data Type": "string",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2."
+        },
+        {
+          "Field Name": "CustomerReferenceLabel",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Custom label to override default customer reference display text"
+        },
+        {
+          "Field Name": "paymentAmount",
+          "Data Type": "number",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nReturns applicable fee if provided with mode 1."
+        },
+        {
+          "Field Name": "PaymentAmountLabel",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Custom label to override default payment amount display text"
+        },
+        {
+          "Field Name": "allowBankAcOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nShow bank account option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowPayToOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nShow PayTo bank account option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowPayIdOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nShow PayID option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowApplePayOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow Apple Pay option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowGooglePayOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow Google Pay option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowLatitudePayOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow Latitude Pay option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowSlicePayOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow Slice Pay option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowUnionPayOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow UnionPay option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "allowAliPayPlusOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow AliPay+ option only if the option is enable for the merchant. Default is false."
+        },
+        {
+          "Field Name": "showFeeOnTokenising",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 1.\nShow the applicable fees for the token at the end of the process. Default is false."
+        },
+        {
+          "Field Name": "showFailedPaymentFeeOnTokenising",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Optional if mode is set to 1.\nShow the applicable failed payment fees for the token at the end of the process. Default is false."
+        },
+        {
+          "Field Name": "merchantUniquePaymentId",
+          "Data Type": "string",
+          "Conditional": "Required",
+          "Remarks": "Payment id provided by the merchant. Must be unique and can not be reused if a transaction is processed using this id."
+        },
+        {
+          "Field Name": "timestamp",
+          "Data Type": "string",
+          "Conditional": "Conditional",
+          "Remarks": "timestamp is required for v4 and optional for v3. Provide current datetime in UTC ISO 8601 format as timestamp. format: yyyy-MM-ddTHH:mm:ss"
+        },
+        {
+          "Field Name": "cardProxy",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Use this parameter to make a payment using a card proxy which is generated using mode '1'."
+        },
+        {
+          "Field Name": "callbackUrl",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "The URL will be called with HTTP POST method to submit the result. Refer the return parameters section below."
+        },
+        {
+          "Field Name": "hideTermsAndConditions",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will hide the Terms and Conditions.\nDefaults to 'false' if not provided."
+        },
+        {
+          "Field Name": "sendConfirmationEmailToMerchant",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will send confirmation email to merchant.\nDefaults to 'false' if not provided."
+        },
+        {
+          "Field Name": "additionalReference",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Additional reference to identify customer. This will be passed on to the merchant reconciliation file (PDF & CSV)"
+        },
+        {
+          "Field Name": "contactNumber",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Contact number"
+        },
+        {
+          "Field Name": "customerEmail",
+          "Data Type": "string",
+          "Conditional": "Conditional",
+          "Remarks": "Email address to which invoice will be emailed if the merchant is configured.\nIt is mandatory in V4."
+        },
+        {
+          "Field Name": "ABN",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Australian Business Number. Used for reward programs if the Program is enabled to provide reward points."
+        },
+        {
+          "Field Name": "companyName",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Customer company name."
+        },
+        {
+          "Field Name": "title",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Plugin Title.\nDefaults to 'Process Payment' if not provided."
+        },
+        {
+          "Field Name": "hideHeader",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will hide the program header including program logo.\nDefaults to 'true' if not provided."
+        },
+        {
+          "Field Name": "hideMerchantLogo",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will hide the merchant logo if any.\nDefaults to 'false' if not provided."
+        },
+        {
+          "Field Name": "overrideFeePayer",
+          "Data Type": "int",
+          "Conditional": "Optional",
+          "Remarks": "Must be one of the following three values\n0 - Default (based on pricing profile)\n1 - Merchant (Merchant will pay the fee regardless of pricing profile setting)\n2 - Customer (Customer will pay the fee regardless of pricing profile setting)\nDefaults to 0 if not provided."
+        },
+        {
+          "Field Name": "departureDate",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "departureDate is required for Slice Pay. Provide date in UTC ISO 8601 format as departureDate. format: yyyy-MM-dd"
+        },
+        {
+          "Field Name": "userMode",
+          "Data Type": "int",
+          "Conditional": "Optional",
+          "Remarks": "Must be one of the following two values\n0 - Customer Facing - default (cardholder must enter CCV or 3DS)\n1 - Merchant Facing (for merchant use only - no CCV or 3DS) - if supported by merchant options."
+        },
+        {
+          "Field Name": "minHeight",
+          "Data Type": "int",
+          "Conditional": "Optional",
+          "Remarks": "For Mode 0 and 2 height defaults to 725px, for mode 1 height defaults to 450px if not provided."
+        },
+        {
+          "Field Name": "onPluginClose",
+          "Data Type": "function",
+          "Conditional": "Optional",
+          "Remarks": "Javascript callback function to execute when plug-in is closed."
+        },
+        {
+          "Field Name": "sendConfirmationEmailToCustomer",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will send confirmation email to customer.\nDefaults to 'false' if not provided."
+        },
+        {
+          "Field Name": "allowSaveCardUserOption",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Optional",
+          "Remarks": "This will allow to save the card information.\nDefaults to 'false' if not provided.\nThis option will only work if 'Enable Plugin Pay & Save Card' option is enabled at program or merchant level."
+        },
+        {
+          "Field Name": "sku1",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded."
+        },
+        {
+          "Field Name": "sku2",
+          "Data Type": "string",
+          "Conditional": "Optional",
+          "Remarks": "Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded."
+        }
+      ]
+    },
+    "return_parameters": {
+      "heading": "Return Parameters",
+      "tables": [
+        {
+          "index": 0,
+          "label": "The following parameters are returned in mode 0 and 2. Same payload is also delivered in JSON format if callback URL is provided.",
+          "headers": [
+            "Parameter",
+            "Value"
+          ],
+          "rows": [
+            {
+              "Parameter": "result",
+              "Value": "Possible values (case insensitive):\nsuccess => Processing successful\nfailed => Processing failed\nerror => All validation errors and generic errors. This means, the plugin did not processed the request"
+            },
+            {
+              "Parameter": "CustomerName",
+              "Value": "Same as input parameter."
+            },
+            {
+              "Parameter": "CustomerReference",
+              "Value": "Same as input parameter."
+            },
+            {
+              "Parameter": "MerchantUniquePaymentId",
+              "Value": "Same as input parameter."
+            },
+            {
+              "Parameter": "AccountOrCardNo",
+              "Value": "Account or card number used to process payment."
+            },
+            {
+              "Parameter": "PaymentReference",
+              "Value": "Payment reference. (applicable for Payment)"
+            },
+            {
+              "Parameter": "PreauthReference",
+              "Value": "Preauthorization reference. (applicable for Preauthorization)"
+            },
+            {
+              "Parameter": "ProcessorReference",
+              "Value": "Processor reference."
+            },
+            {
+              "Parameter": "PaymentStatus",
+              "Value": "Possiible values\n0 => (Pending)\n1 => (Error)\n3 => (Successful)\n4 => (Failed)\n5 => (Cancelled)\n6 => (Suppressed)\n7 => (InProgress)"
+            },
+            {
+              "Parameter": "PaymentStatusString",
+              "Value": "Possiible values\nPending\nError\nSuccessful\nFailed\nCancelled\nSuppressed\nInProgress"
+            },
+            {
+              "Parameter": "PreauthStatus",
+              "Value": "Possiible values\n0 => (Pending)\n1 => (Error)\n3 => (Successful)\n4 => (Failed)\n5 => (Cancelled)\n6 => (Suppressed)\n7 => (InProgress)"
+            },
+            {
+              "Parameter": "PreauthStatusString",
+              "Value": "Possiible values\nPending\nError\nSuccessful\nFailed\nCancelled\nSuppressed\nInProgress"
+            },
+            {
+              "Parameter": "TransactionSource",
+              "Value": "Possiible values\n36 => (Public_OnlineOneOffPayment)"
+            },
+            {
+              "Parameter": "TransactionSourceString",
+              "Value": "Possiible values\nPublic_OnlineOneOffPayment"
+            },
+            {
+              "Parameter": "ProcessingDate",
+              "Value": "The date and time when the payment is processed.\nformat:\nyyyy-MM-ddTHH:mm:ss"
+            },
+            {
+              "Parameter": "SettlementDate",
+              "Value": "The date when the payment is settled to the merchant.\nformat:\nyyyy-MM-dd"
+            },
+            {
+              "Parameter": "IsPaymentSettledToMerchant",
+              "Value": "Flag to indicate whetehr the funds are settled to the merchant or not."
+            },
+            {
+              "Parameter": "BaseAmount",
+              "Value": "Same as payment amount."
+            },
+            {
+              "Parameter": "CustomerFee",
+              "Value": "Fee charged to the the customer to process the payment."
+            },
+            {
+              "Parameter": "ProcessedAmount",
+              "Value": "Base amount + Customer fee. (applicable for Payment)"
+            },
+            {
+              "Parameter": "PreauthAmount",
+              "Value": "Base amount + Customer fee. (applicable for Preauthorization)"
+            },
+            {
+              "Parameter": "FundsToMerchant",
+              "Value": "Base amount - Merchant fee, if applicable."
+            },
+            {
+              "Parameter": "MerchantCode",
+              "Value": "Merchant code."
+            },
+            {
+              "Parameter": "FailureCode",
+              "Value": "Populated only when payment is not successful."
+            },
+            {
+              "Parameter": "FailureReason",
+              "Value": "Populated only when payment is not successful."
+            },
+            {
+              "Parameter": "Token",
+              "Value": "Returned only if payment is processed using cardProxy input parameter. The value will be same as cardProxy."
+            },
+            {
+              "Parameter": "PayId",
+              "Value": "Returned only if payment is processed using PayID."
+            },
+            {
+              "Parameter": "PayIdName",
+              "Value": "Returned only if payment is processed using PayID. Display name for the PayID"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "label": "The following parameters are returned in mode 1. Same payload is also delivered in JSON format if callback URL is provided.",
+          "headers": [
+            "Parameter",
+            "Value"
+          ],
+          "rows": [
+            {
+              "Parameter": "Token",
+              "Value": "The proxy that can be saved and then use to process payment using API or payment plugin."
+            },
+            {
+              "Parameter": "CardType",
+              "Value": "Type of card i.e. Visa, MasterCards, Ammercican Express Or Bank Account."
+            },
+            {
+              "Parameter": "CardHolderName",
+              "Value": "Card holder name provided by the user. Returned only if user selects credit / debit card."
+            },
+            {
+              "Parameter": "CardNumber",
+              "Value": "Obfuscated card number provided by the user. Returned only if user selects credit / debit card."
+            },
+            {
+              "Parameter": "CardExpiry",
+              "Value": "Card expiry date. Returned only if user selects credit / debit card.\nformat:\nMM/CCYY"
+            },
+            {
+              "Parameter": "AccountName",
+              "Value": "Account name provided by the user. Returned only if user selects bank account."
+            },
+            {
+              "Parameter": "AccountNumber",
+              "Value": "Obfuscated account number provided by the user. Returned only if user selects bank account."
+            },
+            {
+              "Parameter": "PayId",
+              "Value": "Returned only if payment is processed using PayID."
+            },
+            {
+              "Parameter": "PayIdName",
+              "Value": "Returned only if payment is processed using PayID. Display name for the PayID"
+            },
+            {
+              "Parameter": "IsRestrictedCard",
+              "Value": "Flag to indicate whetehr the card is restricted or not."
+            },
+            {
+              "Parameter": "PaymentAmount",
+              "Value": "Same as input parameter."
+            },
+            {
+              "Parameter": "CustomerFee",
+              "Value": "Customer fee applicable to process a payment of amount specified in PaymentAmount input parameter."
+            },
+            {
+              "Parameter": "MerchantFee",
+              "Value": "Merchant fee applicable to process a payment of amount specified in PaymentAmount input parameter."
+            },
+            {
+              "Parameter": "ProcessingAmount",
+              "Value": "The total amount that will be processed i.e. PaymentAmount + CustomerFee."
+            }
+          ]
+        }
+      ]
+    },
+    "error_codes": {
+      "heading": "Error Codes",
+      "headers": [
+        "Error Code",
+        "Description"
+      ],
+      "rows": [
+        {
+          "Error Code": "E01",
+          "Description": "Make sure fingerprint and apikey are passed."
+        },
+        {
+          "Error Code": "E02-*",
+          "Description": "MerchantUniquePaymentId cannot be empty."
+        },
+        {
+          "Error Code": "E03-*",
+          "Description": "The fingerprint should be unique everytime.\nThis can be achieved by using new MerchantUniquePaymentId and current Timestamp everytime the plugin is opened."
+        },
+        {
+          "Error Code": "E04",
+          "Description": "Invalid Credentials. Applicable for V1 and V2(V1 and V2 are deprecated)."
+        },
+        {
+          "Error Code": "E05",
+          "Description": "Make sure fingerprint and apikey are passed."
+        },
+        {
+          "Error Code": "E06",
+          "Description": "Account is not active. Contact administrator."
+        },
+        {
+          "Error Code": "E07",
+          "Description": "Provided endpoint is not supported."
+        },
+        {
+          "Error Code": "E08",
+          "Description": "Invalid Credentials. Make sure fingerprint is correctly generated, refer to fingerprint generation logic."
+        },
+        {
+          "Error Code": "E09",
+          "Description": "Security violation. Close and open the plugin with fresh fingerprint."
+        },
+        {
+          "Error Code": "E10",
+          "Description": "Security violation. Close and open the plugin with fresh fingerprint."
+        },
+        {
+          "Error Code": "E11",
+          "Description": "Timestamp cannot be empty. Make sure to pass same timestamp as in generated fingerprint."
+        },
+        {
+          "Error Code": "E13",
+          "Description": "MerchantCode provided does not match with the provided credentials."
+        },
+        {
+          "Error Code": "E14",
+          "Description": "Security violation. Close and open the plugin with fresh fingerprint."
+        },
+        {
+          "Error Code": "E15",
+          "Description": "MerchantCode cannot be empty(V4 onwards)."
+        },
+        {
+          "Error Code": "E16",
+          "Description": "Version can not be empty."
+        },
+        {
+          "Error Code": "E17",
+          "Description": "CustomerEmail can not be empty(V4 onwards)."
+        },
+        {
+          "Error Code": "E18",
+          "Description": "DepartureDate is required for Slice Pay."
+        },
+        {
+          "Error Code": "E19",
+          "Description": "Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format."
+        }
+      ]
+    }
+  }
+}
