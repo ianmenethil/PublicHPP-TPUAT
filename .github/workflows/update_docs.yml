@@ -43,11 +43,11 @@ jobs:
 
       - name: Generate OpenAPI (schema container)
         run: |
-          python convert.py \
+          python scripts/convert.py \
             --in  docs/travelpay_demo.json \
             --out docs/openapi.plugin.yaml
 
-      - name: Detect changes (including untracked)
+      - name: Detect changes (includes untracked)
         id: changes
         shell: bash
         run: |
@@ -69,7 +69,6 @@ jobs:
 
           git add docs/travelpay_demo.raw.json docs/travelpay_demo.json docs/travelpay_demo.md docs/openapi.plugin.yaml
 
-          # Avoid failing if nothing staged for some reason
           if git diff --cached --quiet; then
             echo "Nothing staged to commit."
             exit 0
