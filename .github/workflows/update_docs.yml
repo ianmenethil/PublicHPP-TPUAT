@@ -43,7 +43,7 @@ jobs:
 
       - name: Generate OpenAPI (schema container)
         run: |
-          python scripts/convert.py \
+          python convert.py \
             --in  docs/travelpay_demo.json \
             --out docs/openapi.plugin.yaml
 
