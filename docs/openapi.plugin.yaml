@@ -1,617 +1,617 @@
 openapi: 3.1.0
 info:
-title: TravelPay / Zenith Payments - zpPayment JavaScript Plugin Schemas (v5)
-version: 2025-12-13
-summary: OpenAPI used as a schema container for the zpPayment JavaScript plugin (not an HTTP API).
-description: |
-  This OpenAPI 3.1 document is intentionally not a server-side REST API specification.
-  
-  It exists so OpenAPI-capable tooling can consume a single canonical spec describing:
-  - JavaScript plugin init options passed to `$.zpPayment(options)`
-  - Result payloads delivered via redirect URL query string and/or callbackUrl
-  
-  Source page: https://payuat.travelpay.com.au/demo/
-  HTML SHA256: e7b9966c830d68c31a2f641f4423ba3b56df9fe8db4300143552e4337fce9879
+  title: TravelPay / Zenith Payments - zpPayment JavaScript Plugin Schemas (v5)
+  version: 2025-12-13
+  summary: OpenAPI used as a schema container for the zpPayment JavaScript plugin (not an HTTP API).
+  description: |
+    This OpenAPI 3.1 document is intentionally not a server-side REST API specification.
+    
+    It exists so OpenAPI-capable tooling can consume a single canonical spec describing:
+    - JavaScript plugin init options passed to `$.zpPayment(options)`
+    - Result payloads delivered via redirect URL query string and/or callbackUrl
+    
+    Source page: https://payuat.travelpay.com.au/demo/
+    HTML SHA256: c170fcfa835c11eebe184be721d7c5e112b77a3deff63f698de1e4e3d2fba33c
 servers:
 paths:
 x-javascript-plugin:
-library: jQuery
-function: $.zpPayment
-initCall: payment.init()
-assets:
-stylesheet: 'https://cdn.b2bpay.com.au/css/zenpay.payment.css'
-javascript: 'https://cdn.b2bpay.com.au/js/zenpay.payment.js'
-codeSample: |
-  var payment = $.zpPayment({
-      url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',
-      merchantCode: '<<MERCHANT-CODE>>',
-      apiKey: '<<API-KEY>>',
-      fingerprint: '<<FINGERPRINT>>',
-      redirectUrl: '<<Your Redirect URL>>',
-      mode: 0,
-      displayMode: 0,
-      customerName: 'Customer Name',
-      customerReference: 'Reference 1',
-      paymentAmount: 100.00,
-      timeStamp: '<<TIMESTAMP>>'
-  });
-  var result = payment.init();
+  library: jQuery
+  function: $.zpPayment
+  initCall: payment.init()
+  assets:
+    stylesheet: 'https://cdn.b2bpay.com.au/css/zenpay.payment.css'
+    javascript: 'https://cdn.b2bpay.com.au/js/zenpay.payment.js'
+  codeSample: |
+    var payment = $.zpPayment({
+        url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',
+        merchantCode: '<<MERCHANT-CODE>>',
+        apiKey: '<<API-KEY>>',
+        fingerprint: '<<FINGERPRINT>>',
+        redirectUrl: '<<Your Redirect URL>>',
+        mode: 0,
+        displayMode: 0,
+        customerName: 'Customer Name',
+        customerReference: 'Reference 1',
+        paymentAmount: 100.00,
+        timeStamp: '<<TIMESTAMP>>'
+    });
+    var result = payment.init();
 components:
-schemas:
-ZpPaymentInitOptions:
-type: object
-description: 'Options passed to `$.zpPayment(options)` (jQuery).'
-additionalProperties: false
-properties:
-url:
-type: string
-description: Plugin access url. We strongly recommend v5 integration.
-merchantCode:
-type: string
-description: As provided by Zenith.
-apiKey:
-type: string
-description: As provided by Zenith
-fingerprint:
-type: string
-description: |
-  Fingerprint (v5) is a SHA3-512 hash of the following pipe-delimited string:
-  `apiKey|userName|password|mode|paymentAmount|merchantUniquePaymentId|timestamp`
-  Credentials provided by Zenith Payments are case sensitive.
-  Field notes:
-  `apiKey`: refer apiKey parameter
-  `userName`: provided by Zenith Payments
-  `password`: provided by Zenith Payments
-  `mode`: refer mode parameter
-  `paymentAmount`: amount in cents without symbol (e.g. $150.53 => 15053). Pass 0 when mode is 2.
-  `merchantUniquePaymentId`: refer merchantUniquePaymentId parameter
-  `timestamp`: current datetime in UTC ISO 8601 format (yyyy-MM-ddTHH:mm:ss).
-redirectUrl:
-type: string
-description: The page will redirect to this URL with the result in the query string. Refer the return parameters section below.
-redirectOnError:
-type: string
-description: 'If this is set to true, all validation and processing errors are returned part of the redirect url. Default is ''false''.'
-mode:
-type: integer
-description: |
-  Must be one of the following three values
-  0 - Make Payment
-  1 - Tokenise
-  2 - Custom Payment
-  3 - Preauthorization
-  Defaults to 0 if not provided.
-enum:
-- 0
-- 1
-- 2
-- 3
-displayMode:
-type: integer
-description: |
-  Must be one of the following two values
-  0 - Default (Modal)
-  1 - Redirect Url
-  Defaults to 0 if not provided.
-  Google Pay and Apple Pay works if Modal or Redirect Url with iframe is used.
-enum:
-- 0
-- 1
-customerName:
-type: string
-description: Required if mode is set to 0 or 2.
-CustomerNameLabel:
-type: string
-description: Custom label to override default customer name display text
-customerReference:
-type: string
-description: Required if mode is set to 0 or 2.
-CustomerReferenceLabel:
-type: string
-description: Custom label to override default customer reference display text
-paymentAmount:
-type: number
-description: |
-  Required if mode is set to 0 or 2.
-  Returns applicable fee if provided with mode 1.
-PaymentAmountLabel:
-type: string
-description: Custom label to override default payment amount display text
-allowBankAcOneOffPayment:
-type: boolean
-description: |
-  Required if mode is set to 0 or 2.
-  Show bank account option only if the option is enable for the merchant. Default is false.
-allowPayToOneOffPayment:
-type: boolean
-description: |
-  Required if mode is set to 0 or 2.
-  Show PayTo bank account option only if the option is enable for the merchant. Default is false.
-allowPayIdOneOffPayment:
-type: boolean
-description: |
-  Required if mode is set to 0 or 2.
-  Show PayID option only if the option is enable for the merchant. Default is false.
-allowApplePayOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show Apple Pay option only if the option is enable for the merchant. Default is false.
-allowGooglePayOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show Google Pay option only if the option is enable for the merchant. Default is false.
-allowLatitudePayOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show Latitude Pay option only if the option is enable for the merchant. Default is false.
-allowSlicePayOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show Slice Pay option only if the option is enable for the merchant. Default is false.
-allowUnionPayOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show UnionPay option only if the option is enable for the merchant. Default is false.
-allowAliPayPlusOneOffPayment:
-type: boolean
-description: |
-  Conditional if mode is set to 0.
-  Show AliPay+ option only if the option is enable for the merchant. Default is false.
-showFeeOnTokenising:
-type: boolean
-description: |
-  Required if mode is set to 1.
-  Show the applicable fees for the token at the end of the process. Default is false.
-showFailedPaymentFeeOnTokenising:
-type: boolean
-description: |
-  Optional if mode is set to 1.
-  Show the applicable failed payment fees for the token at the end of the process. Default is false.
-merchantUniquePaymentId:
-type: string
-description: Payment id provided by the merchant. Must be unique and can not be reused if a transaction is processed using this id.
-timestamp:
-type: string
-description: 'UTC ISO-8601 timestamp (yyyy-MM-ddTHH:mm:ss)'
-pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
-examples:
-- '2025-12-13T09:56:03'
-cardProxy:
-type: string
-description: Use this parameter to make a payment using a card proxy which is generated using mode '1'.
-callbackUrl:
-type: string
-description: The URL will be called with HTTP POST method to submit the result. Refer the return parameters section below.
-hideTermsAndConditions:
-type: boolean
-description: |
-  This will hide the Terms and Conditions.
-  Defaults to 'false' if not provided.
-sendConfirmationEmailToMerchant:
-type: boolean
-description: |
-  This will send confirmation email to merchant.
-  Defaults to 'false' if not provided.
-additionalReference:
-type: string
-description: 'Additional reference to identify customer. This will be passed on to the merchant reconciliation file (PDF & CSV)'
-contactNumber:
-type: string
-description: Contact number
-customerEmail:
-type: string
-description: |
-  Email address to which invoice will be emailed if the merchant is configured.
-  It is mandatory in V4.
-ABN:
-type: string
-description: Australian Business Number. Used for reward programs if the Program is enabled to provide reward points.
-companyName:
-type: string
-description: Customer company name.
-title:
-type: string
-description: |
-  Plugin Title.
-  Defaults to 'Process Payment' if not provided.
-hideHeader:
-type: boolean
-description: |
-  This will hide the program header including program logo.
-  Defaults to 'true' if not provided.
-hideMerchantLogo:
-type: boolean
-description: |
-  This will hide the merchant logo if any.
-  Defaults to 'false' if not provided.
-overrideFeePayer:
-type: integer
-description: |
-  Must be one of the following three values
-  0 - Default (based on pricing profile)
-  1 - Merchant (Merchant will pay the fee regardless of pricing profile setting)
-  2 - Customer (Customer will pay the fee regardless of pricing profile setting)
-  Defaults to 0 if not provided.
-enum:
-- 0
-- 1
-- 2
-departureDate:
-type: string
-description: UTC ISO-8601 date (yyyy-MM-dd)
-pattern: '^\d{4}-\d{2}-\d{2}$'
-examples:
-- 2025-12-13
-userMode:
-type: integer
-description: |
-  Must be one of the following two values
-  0 - Customer Facing - default (cardholder must enter CCV or 3DS)
-  1 - Merchant Facing (for merchant use only - no CCV or 3DS) - if supported by merchant options.
-enum:
-- 0
-- 1
-minHeight:
-type: integer
-description: 'For Mode 0 and 2 height defaults to 725px, for mode 1 height defaults to 450px if not provided.'
-onPluginClose:
-type: string
-description: Javascript callback function to execute when plug-in is closed.
-x-javascriptType: function
-sendConfirmationEmailToCustomer:
-type: boolean
-description: |
-  This will send confirmation email to customer.
-  Defaults to 'false' if not provided.
-allowSaveCardUserOption:
-type: boolean
-description: |
-  This will allow to save the card information.
-  Defaults to 'false' if not provided.
-  This option will only work if 'Enable Plugin Pay & Save Card' option is enabled at program or merchant level.
-sku1:
-type: string
-description: 'Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded.'
-sku2:
-type: string
-description: 'Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded.'
-timeStamp:
-type: string
-description: 'Alias of `timestamp` (seen in code sample). Prefer `timestamp` where possible.'
-pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
-examples:
-- '2025-12-13T09:56:03'
-required:
-- url
-- merchantCode
-- apiKey
-- fingerprint
-- redirectUrl
-- merchantUniquePaymentId
-allOf:
--
-  oneOf:
-  -
-    required:
-    - timestamp
-  -
-    required:
-    - timeStamp
--
-  if:
-  properties:
-  mode:
-  enum:
-  - 0
-  - 2
-  required:
-  - mode
-  then:
-  required:
-  - customerName
-  - customerReference
-  - paymentAmount
-ZpPaymentResultMode0or2:
-type: object
-description: Result payload returned for mode 0 and 2 (redirect/callback).
-additionalProperties: true
-properties:
-result:
-type: string
-description: |
-  Possible values (case insensitive):
-  success => Processing successful
-  failed => Processing failed
-  error => All validation errors and generic errors. This means, the plugin did not processed the request
-enum:
-- success
-- failed
-- error
-CustomerName:
-type: string
-description: Same as input parameter.
-CustomerReference:
-type: string
-description: Same as input parameter.
-MerchantUniquePaymentId:
-type: string
-description: Same as input parameter.
-AccountOrCardNo:
-type: string
-description: Account or card number used to process payment.
-PaymentReference:
-type: string
-description: Payment reference. (applicable for Payment)
-PreauthReference:
-type: string
-description: Preauthorization reference. (applicable for Preauthorization)
-ProcessorReference:
-type: string
-description: Processor reference.
-PaymentStatus:
-type: integer
-description: |
-  Possiible values
-  0 => (Pending)
-  1 => (Error)
-  3 => (Successful)
-  4 => (Failed)
-  5 => (Cancelled)
-  6 => (Suppressed)
-  7 => (InProgress)
-enum:
-- 0
-- 1
-- 3
-- 4
-- 5
-- 6
-- 7
-PaymentStatusString:
-type: string
-description: |
-  Possiible values
-  Pending
-  Error
-  Successful
-  Failed
-  Cancelled
-  Suppressed
-  InProgress
-enum:
-- Pending
-- Error
-- Successful
-- Failed
-- Cancelled
-- Suppressed
-- InProgress
-PreauthStatus:
-type: integer
-description: |
-  Possiible values
-  0 => (Pending)
-  1 => (Error)
-  3 => (Successful)
-  4 => (Failed)
-  5 => (Cancelled)
-  6 => (Suppressed)
-  7 => (InProgress)
-enum:
-- 0
-- 1
-- 3
-- 4
-- 5
-- 6
-- 7
-PreauthStatusString:
-type: string
-description: |
-  Possiible values
-  Pending
-  Error
-  Successful
-  Failed
-  Cancelled
-  Suppressed
-  InProgress
-enum:
-- Pending
-- Error
-- Successful
-- Failed
-- Cancelled
-- Suppressed
-- InProgress
-TransactionSource:
-type: integer
-description: |
-  Possiible values
-  36 => (Public_OnlineOneOffPayment)
-enum:
-- 36
-TransactionSourceString:
-type: string
-description: |
-  Possiible values
-  Public_OnlineOneOffPayment
-enum:
-- Public_OnlineOneOffPayment
-ProcessingDate:
-type: string
-description: |
-  The date and time when the payment is processed.
-  format:
-  yyyy-MM-ddTHH:mm:ss
-pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
-examples:
-- '2025-12-13T09:56:03'
-SettlementDate:
-type: string
-description: |
-  The date when the payment is settled to the merchant.
-  format:
-  yyyy-MM-dd
-pattern: '^\d{4}-\d{2}-\d{2}$'
-examples:
-- 2025-12-13
-IsPaymentSettledToMerchant:
-type: string
-description: Flag to indicate whetehr the funds are settled to the merchant or not.
-BaseAmount:
-type: string
-description: Same as payment amount.
-CustomerFee:
-type: string
-description: Fee charged to the the customer to process the payment.
-ProcessedAmount:
-type: string
-description: Base amount + Customer fee. (applicable for Payment)
-PreauthAmount:
-type: string
-description: Base amount + Customer fee. (applicable for Preauthorization)
-FundsToMerchant:
-type: string
-description: 'Base amount - Merchant fee, if applicable.'
-MerchantCode:
-type: string
-description: Merchant code.
-FailureCode:
-type: string
-description: Populated only when payment is not successful.
-FailureReason:
-type: string
-description: Populated only when payment is not successful.
-Token:
-type: string
-description: Returned only if payment is processed using cardProxy input parameter. The value will be same as cardProxy.
-PayId:
-type: string
-description: Returned only if payment is processed using PayID.
-PayIdName:
-type: string
-description: Returned only if payment is processed using PayID. Display name for the PayID
-ZpPaymentResultMode1:
-type: object
-description: Result payload returned for mode 1 (tokenisation).
-additionalProperties: true
-properties:
-Token:
-type: string
-description: The proxy that can be saved and then use to process payment using API or payment plugin.
-CardType:
-type: string
-description: 'Type of card i.e. Visa, MasterCards, Ammercican Express Or Bank Account.'
-CardHolderName:
-type: string
-description: Card holder name provided by the user. Returned only if user selects credit / debit card.
-CardNumber:
-type: string
-description: Obfuscated card number provided by the user. Returned only if user selects credit / debit card.
-CardExpiry:
-type: string
-description: |
-  Card expiry date. Returned only if user selects credit / debit card.
-  format:
-  MM/CCYY
-AccountName:
-type: string
-description: Account name provided by the user. Returned only if user selects bank account.
-AccountNumber:
-type: string
-description: Obfuscated account number provided by the user. Returned only if user selects bank account.
-PayId:
-type: string
-description: Returned only if payment is processed using PayID.
-PayIdName:
-type: string
-description: Returned only if payment is processed using PayID. Display name for the PayID
-IsRestrictedCard:
-type: string
-description: Flag to indicate whetehr the card is restricted or not.
-PaymentAmount:
-type: string
-description: Same as input parameter.
-CustomerFee:
-type: string
-description: Customer fee applicable to process a payment of amount specified in PaymentAmount input parameter.
-MerchantFee:
-type: string
-description: Merchant fee applicable to process a payment of amount specified in PaymentAmount input parameter.
-ProcessingAmount:
-type: string
-description: The total amount that will be processed i.e. PaymentAmount + CustomerFee.
-ZpPaymentResult:
-oneOf:
--
-  '$ref': '#/components/schemas/ZpPaymentResultMode0or2'
--
-  '$ref': '#/components/schemas/ZpPaymentResultMode1'
-ZpPaymentErrorCode:
-type: string
-description: Error codes returned by the plugin.
-oneOf:
--
-  const: E01
-  description: Make sure fingerprint and apikey are passed.
--
-  type: string
-  pattern: '^E02\-.*$'
-  description: MerchantUniquePaymentId cannot be empty.
--
-  type: string
-  pattern: '^E03\-.*$'
-  description: |
-    The fingerprint should be unique everytime.
-    This can be achieved by using new MerchantUniquePaymentId and current Timestamp everytime the plugin is opened.
--
-  const: E04
-  description: Invalid Credentials. Applicable for V1 and V2(V1 and V2 are deprecated).
--
-  const: E05
-  description: Make sure fingerprint and apikey are passed.
--
-  const: E06
-  description: Account is not active. Contact administrator.
--
-  const: E07
-  description: Provided endpoint is not supported.
--
-  const: E08
-  description: 'Invalid Credentials. Make sure fingerprint is correctly generated, refer to fingerprint generation logic.'
--
-  const: E09
-  description: Security violation. Close and open the plugin with fresh fingerprint.
--
-  const: E10
-  description: Security violation. Close and open the plugin with fresh fingerprint.
--
-  const: E11
-  description: Timestamp cannot be empty. Make sure to pass same timestamp as in generated fingerprint.
--
-  const: E13
-  description: MerchantCode provided does not match with the provided credentials.
--
-  const: E14
-  description: Security violation. Close and open the plugin with fresh fingerprint.
--
-  const: E15
-  description: MerchantCode cannot be empty(V4 onwards).
--
-  const: E16
-  description: Version can not be empty.
--
-  const: E17
-  description: CustomerEmail can not be empty(V4 onwards).
--
-  const: E18
-  description: DepartureDate is required for Slice Pay.
--
-  const: E19
-  description: Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.
+  schemas:
+    ZpPaymentInitOptions:
+      type: object
+      description: 'Options passed to `$.zpPayment(options)` (jQuery).'
+      additionalProperties: false
+      properties:
+        url:
+          type: string
+          description: Plugin access url. We strongly recommend v5 integration.
+        merchantCode:
+          type: string
+          description: As provided by Zenith.
+        apiKey:
+          type: string
+          description: As provided by Zenith
+        fingerprint:
+          type: string
+          description: |
+            Fingerprint (v5) is a SHA3-512 hash of the following pipe-delimited string:
+            `apiKey|userName|password|mode|paymentAmount|merchantUniquePaymentId|timestamp`
+            Credentials provided by Zenith Payments are case sensitive.
+            Field notes:
+            `apiKey`: refer apiKey parameter
+            `userName`: provided by Zenith Payments
+            `password`: provided by Zenith Payments
+            `mode`: refer mode parameter
+            `paymentAmount`: amount in cents without symbol (e.g. $150.53 => 15053). Pass 0 when mode is 2.
+            `merchantUniquePaymentId`: refer merchantUniquePaymentId parameter
+            `timestamp`: current datetime in UTC ISO 8601 format (yyyy-MM-ddTHH:mm:ss).
+        redirectUrl:
+          type: string
+          description: The page will redirect to this URL with the result in the query string. Refer the return parameters section below.
+        redirectOnError:
+          type: string
+          description: 'If this is set to true, all validation and processing errors are returned part of the redirect url. Default is ''false''.'
+        mode:
+          type: integer
+          description: |
+            Must be one of the following three values
+            0 - Make Payment
+            1 - Tokenise
+            2 - Custom Payment
+            3 - Preauthorization
+            Defaults to 0 if not provided.
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        displayMode:
+          type: integer
+          description: |
+            Must be one of the following two values
+            0 - Default (Modal)
+            1 - Redirect Url
+            Defaults to 0 if not provided.
+            Google Pay and Apple Pay works if Modal or Redirect Url with iframe is used.
+          enum:
+            - 0
+            - 1
+        customerName:
+          type: string
+          description: Required if mode is set to 0 or 2.
+        CustomerNameLabel:
+          type: string
+          description: Custom label to override default customer name display text
+        customerReference:
+          type: string
+          description: Required if mode is set to 0 or 2.
+        CustomerReferenceLabel:
+          type: string
+          description: Custom label to override default customer reference display text
+        paymentAmount:
+          type: number
+          description: |
+            Required if mode is set to 0 or 2.
+            Returns applicable fee if provided with mode 1.
+        PaymentAmountLabel:
+          type: string
+          description: Custom label to override default payment amount display text
+        allowBankAcOneOffPayment:
+          type: boolean
+          description: |
+            Required if mode is set to 0 or 2.
+            Show bank account option only if the option is enable for the merchant. Default is false.
+        allowPayToOneOffPayment:
+          type: boolean
+          description: |
+            Required if mode is set to 0 or 2.
+            Show PayTo bank account option only if the option is enable for the merchant. Default is false.
+        allowPayIdOneOffPayment:
+          type: boolean
+          description: |
+            Required if mode is set to 0 or 2.
+            Show PayID option only if the option is enable for the merchant. Default is false.
+        allowApplePayOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show Apple Pay option only if the option is enable for the merchant. Default is false.
+        allowGooglePayOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show Google Pay option only if the option is enable for the merchant. Default is false.
+        allowLatitudePayOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show Latitude Pay option only if the option is enable for the merchant. Default is false.
+        allowSlicePayOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show Slice Pay option only if the option is enable for the merchant. Default is false.
+        allowUnionPayOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show UnionPay option only if the option is enable for the merchant. Default is false.
+        allowAliPayPlusOneOffPayment:
+          type: boolean
+          description: |
+            Conditional if mode is set to 0.
+            Show AliPay+ option only if the option is enable for the merchant. Default is false.
+        showFeeOnTokenising:
+          type: boolean
+          description: |
+            Required if mode is set to 1.
+            Show the applicable fees for the token at the end of the process. Default is false.
+        showFailedPaymentFeeOnTokenising:
+          type: boolean
+          description: |
+            Optional if mode is set to 1.
+            Show the applicable failed payment fees for the token at the end of the process. Default is false.
+        merchantUniquePaymentId:
+          type: string
+          description: Payment id provided by the merchant. Must be unique and can not be reused if a transaction is processed using this id.
+        timestamp:
+          type: string
+          description: 'UTC ISO-8601 timestamp (yyyy-MM-ddTHH:mm:ss)'
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
+          examples:
+            - '2025-12-13T09:56:03'
+        cardProxy:
+          type: string
+          description: Use this parameter to make a payment using a card proxy which is generated using mode '1'.
+        callbackUrl:
+          type: string
+          description: The URL will be called with HTTP POST method to submit the result. Refer the return parameters section below.
+        hideTermsAndConditions:
+          type: boolean
+          description: |
+            This will hide the Terms and Conditions.
+            Defaults to 'false' if not provided.
+        sendConfirmationEmailToMerchant:
+          type: boolean
+          description: |
+            This will send confirmation email to merchant.
+            Defaults to 'false' if not provided.
+        additionalReference:
+          type: string
+          description: 'Additional reference to identify customer. This will be passed on to the merchant reconciliation file (PDF & CSV)'
+        contactNumber:
+          type: string
+          description: Contact number
+        customerEmail:
+          type: string
+          description: |
+            Email address to which invoice will be emailed if the merchant is configured.
+            It is mandatory in V4.
+        ABN:
+          type: string
+          description: Australian Business Number. Used for reward programs if the Program is enabled to provide reward points.
+        companyName:
+          type: string
+          description: Customer company name.
+        title:
+          type: string
+          description: |
+            Plugin Title.
+            Defaults to 'Process Payment' if not provided.
+        hideHeader:
+          type: boolean
+          description: |
+            This will hide the program header including program logo.
+            Defaults to 'true' if not provided.
+        hideMerchantLogo:
+          type: boolean
+          description: |
+            This will hide the merchant logo if any.
+            Defaults to 'false' if not provided.
+        overrideFeePayer:
+          type: integer
+          description: |
+            Must be one of the following three values
+            0 - Default (based on pricing profile)
+            1 - Merchant (Merchant will pay the fee regardless of pricing profile setting)
+            2 - Customer (Customer will pay the fee regardless of pricing profile setting)
+            Defaults to 0 if not provided.
+          enum:
+            - 0
+            - 1
+            - 2
+        departureDate:
+          type: string
+          description: UTC ISO-8601 date (yyyy-MM-dd)
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          examples:
+            - 2025-12-13
+        userMode:
+          type: integer
+          description: |
+            Must be one of the following two values
+            0 - Customer Facing - default (cardholder must enter CCV or 3DS)
+            1 - Merchant Facing (for merchant use only - no CCV or 3DS) - if supported by merchant options.
+          enum:
+            - 0
+            - 1
+        minHeight:
+          type: integer
+          description: 'For Mode 0 and 2 height defaults to 725px, for mode 1 height defaults to 450px if not provided.'
+        onPluginClose:
+          type: string
+          description: Javascript callback function to execute when plug-in is closed.
+          x-javascriptType: function
+        sendConfirmationEmailToCustomer:
+          type: boolean
+          description: |
+            This will send confirmation email to customer.
+            Defaults to 'false' if not provided.
+        allowSaveCardUserOption:
+          type: boolean
+          description: |
+            This will allow to save the card information.
+            Defaults to 'false' if not provided.
+            This option will only work if 'Enable Plugin Pay & Save Card' option is enabled at program or merchant level.
+        sku1:
+          type: string
+          description: 'Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded.'
+        sku2:
+          type: string
+          description: 'Stock Keeping Unit – Optional text fields, allowing up to 50 alphanumeric characters. If the value exceeds 50 characters, only the first 50 characters will be retained and the rest discarded.'
+        timeStamp:
+          type: string
+          description: 'Alias of `timestamp` (seen in code sample). Prefer `timestamp` where possible.'
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
+          examples:
+            - '2025-12-13T09:56:03'
+      required:
+        - url
+        - merchantCode
+        - apiKey
+        - fingerprint
+        - redirectUrl
+        - merchantUniquePaymentId
+      allOf:
+        -
+          oneOf:
+            -
+              required:
+                - timestamp
+            -
+              required:
+                - timeStamp
+        -
+          if:
+            properties:
+              mode:
+                enum:
+                  - 0
+                  - 2
+            required:
+              - mode
+          then:
+            required:
+              - customerName
+              - customerReference
+              - paymentAmount
+    ZpPaymentResultMode0or2:
+      type: object
+      description: Result payload returned for mode 0 and 2 (redirect/callback).
+      additionalProperties: true
+      properties:
+        result:
+          type: string
+          description: |
+            Possible values (case insensitive):
+            success => Processing successful
+            failed => Processing failed
+            error => All validation errors and generic errors. This means, the plugin did not processed the request
+          enum:
+            - success
+            - failed
+            - error
+        CustomerName:
+          type: string
+          description: Same as input parameter.
+        CustomerReference:
+          type: string
+          description: Same as input parameter.
+        MerchantUniquePaymentId:
+          type: string
+          description: Same as input parameter.
+        AccountOrCardNo:
+          type: string
+          description: Account or card number used to process payment.
+        PaymentReference:
+          type: string
+          description: Payment reference. (applicable for Payment)
+        PreauthReference:
+          type: string
+          description: Preauthorization reference. (applicable for Preauthorization)
+        ProcessorReference:
+          type: string
+          description: Processor reference.
+        PaymentStatus:
+          type: integer
+          description: |
+            Possiible values
+            0 => (Pending)
+            1 => (Error)
+            3 => (Successful)
+            4 => (Failed)
+            5 => (Cancelled)
+            6 => (Suppressed)
+            7 => (InProgress)
+          enum:
+            - 0
+            - 1
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+        PaymentStatusString:
+          type: string
+          description: |
+            Possiible values
+            Pending
+            Error
+            Successful
+            Failed
+            Cancelled
+            Suppressed
+            InProgress
+          enum:
+            - Pending
+            - Error
+            - Successful
+            - Failed
+            - Cancelled
+            - Suppressed
+            - InProgress
+        PreauthStatus:
+          type: integer
+          description: |
+            Possiible values
+            0 => (Pending)
+            1 => (Error)
+            3 => (Successful)
+            4 => (Failed)
+            5 => (Cancelled)
+            6 => (Suppressed)
+            7 => (InProgress)
+          enum:
+            - 0
+            - 1
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+        PreauthStatusString:
+          type: string
+          description: |
+            Possiible values
+            Pending
+            Error
+            Successful
+            Failed
+            Cancelled
+            Suppressed
+            InProgress
+          enum:
+            - Pending
+            - Error
+            - Successful
+            - Failed
+            - Cancelled
+            - Suppressed
+            - InProgress
+        TransactionSource:
+          type: integer
+          description: |
+            Possiible values
+            36 => (Public_OnlineOneOffPayment)
+          enum:
+            - 36
+        TransactionSourceString:
+          type: string
+          description: |
+            Possiible values
+            Public_OnlineOneOffPayment
+          enum:
+            - Public_OnlineOneOffPayment
+        ProcessingDate:
+          type: string
+          description: |
+            The date and time when the payment is processed.
+            format:
+            yyyy-MM-ddTHH:mm:ss
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
+          examples:
+            - '2025-12-13T09:56:03'
+        SettlementDate:
+          type: string
+          description: |
+            The date when the payment is settled to the merchant.
+            format:
+            yyyy-MM-dd
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          examples:
+            - 2025-12-13
+        IsPaymentSettledToMerchant:
+          type: string
+          description: Flag to indicate whetehr the funds are settled to the merchant or not.
+        BaseAmount:
+          type: string
+          description: Same as payment amount.
+        CustomerFee:
+          type: string
+          description: Fee charged to the the customer to process the payment.
+        ProcessedAmount:
+          type: string
+          description: Base amount + Customer fee. (applicable for Payment)
+        PreauthAmount:
+          type: string
+          description: Base amount + Customer fee. (applicable for Preauthorization)
+        FundsToMerchant:
+          type: string
+          description: 'Base amount - Merchant fee, if applicable.'
+        MerchantCode:
+          type: string
+          description: Merchant code.
+        FailureCode:
+          type: string
+          description: Populated only when payment is not successful.
+        FailureReason:
+          type: string
+          description: Populated only when payment is not successful.
+        Token:
+          type: string
+          description: Returned only if payment is processed using cardProxy input parameter. The value will be same as cardProxy.
+        PayId:
+          type: string
+          description: Returned only if payment is processed using PayID.
+        PayIdName:
+          type: string
+          description: Returned only if payment is processed using PayID. Display name for the PayID
+    ZpPaymentResultMode1:
+      type: object
+      description: Result payload returned for mode 1 (tokenisation).
+      additionalProperties: true
+      properties:
+        Token:
+          type: string
+          description: The proxy that can be saved and then use to process payment using API or payment plugin.
+        CardType:
+          type: string
+          description: 'Type of card i.e. Visa, MasterCards, Ammercican Express Or Bank Account.'
+        CardHolderName:
+          type: string
+          description: Card holder name provided by the user. Returned only if user selects credit / debit card.
+        CardNumber:
+          type: string
+          description: Obfuscated card number provided by the user. Returned only if user selects credit / debit card.
+        CardExpiry:
+          type: string
+          description: |
+            Card expiry date. Returned only if user selects credit / debit card.
+            format:
+            MM/CCYY
+        AccountName:
+          type: string
+          description: Account name provided by the user. Returned only if user selects bank account.
+        AccountNumber:
+          type: string
+          description: Obfuscated account number provided by the user. Returned only if user selects bank account.
+        PayId:
+          type: string
+          description: Returned only if payment is processed using PayID.
+        PayIdName:
+          type: string
+          description: Returned only if payment is processed using PayID. Display name for the PayID
+        IsRestrictedCard:
+          type: string
+          description: Flag to indicate whetehr the card is restricted or not.
+        PaymentAmount:
+          type: string
+          description: Same as input parameter.
+        CustomerFee:
+          type: string
+          description: Customer fee applicable to process a payment of amount specified in PaymentAmount input parameter.
+        MerchantFee:
+          type: string
+          description: Merchant fee applicable to process a payment of amount specified in PaymentAmount input parameter.
+        ProcessingAmount:
+          type: string
+          description: The total amount that will be processed i.e. PaymentAmount + CustomerFee.
+    ZpPaymentResult:
+      oneOf:
+        -
+          '$ref': '#/components/schemas/ZpPaymentResultMode0or2'
+        -
+          '$ref': '#/components/schemas/ZpPaymentResultMode1'
+    ZpPaymentErrorCode:
+      type: string
+      description: Error codes returned by the plugin.
+      oneOf:
+        -
+          const: E01
+          description: Make sure fingerprint and apikey are passed.
+        -
+          type: string
+          pattern: '^E02\-.*$'
+          description: MerchantUniquePaymentId cannot be empty.
+        -
+          type: string
+          pattern: '^E03\-.*$'
+          description: |
+            The fingerprint should be unique everytime.
+            This can be achieved by using new MerchantUniquePaymentId and current Timestamp everytime the plugin is opened.
+        -
+          const: E04
+          description: Invalid Credentials. Applicable for V1 and V2(V1 and V2 are deprecated).
+        -
+          const: E05
+          description: Make sure fingerprint and apikey are passed.
+        -
+          const: E06
+          description: Account is not active. Contact administrator.
+        -
+          const: E07
+          description: Provided endpoint is not supported.
+        -
+          const: E08
+          description: 'Invalid Credentials. Make sure fingerprint is correctly generated, refer to fingerprint generation logic.'
+        -
+          const: E09
+          description: Security violation. Close and open the plugin with fresh fingerprint.
+        -
+          const: E10
+          description: Security violation. Close and open the plugin with fresh fingerprint.
+        -
+          const: E11
+          description: Timestamp cannot be empty. Make sure to pass same timestamp as in generated fingerprint.
+        -
+          const: E13
+          description: MerchantCode provided does not match with the provided credentials.
+        -
+          const: E14
+          description: Security violation. Close and open the plugin with fresh fingerprint.
+        -
+          const: E15
+          description: MerchantCode cannot be empty(V4 onwards).
+        -
+          const: E16
+          description: Version can not be empty.
+        -
+          const: E17
+          description: CustomerEmail can not be empty(V4 onwards).
+        -
+          const: E18
+          description: DepartureDate is required for Slice Pay.
+        -
+          const: E19
+          description: Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.
