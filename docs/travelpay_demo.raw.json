@@ -1,14 +1,14 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-01-12T02:50:45.196974Z",
+    "extracted_at": "2026-01-19T02:50:59.545804Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "e04713f5287c8a17ff3481b528214ac63c655ed67f04883f22785fbb8ee28008"
+    "html_sha256": "387da4958d7ec9c8e02797050dfcef3111c0e74c0332eee21533a5285a31dae8"
   },
   "sections": {
     "code_sample": {
@@ -23,10 +23,10 @@
           "display": "https://cdn.<<PROGRAM DOMAIN>>.com.au/js/zenpay.payment.js"
         }
       },
-      "code": "var payment = $.zpPayment({\n    url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',\n    merchantCode: '<<MERCHANT-CODE>>',\n    apiKey: '<<API-KEY>>',\n    fingerprint: '<<FINGERPRINT>>',\n    redirectUrl: '<<Your Redirect URL>>',\n    mode: 0,\n    displayMode: 0,\n    customerName: 'Customer Name',\n    customerReference: 'Reference 1',\n    paymentAmount: 100.00,\n    timeStamp: '<<TIMESTAMP>>'\n});\nvar result = payment.init();",
+      "code": "var payment = $.zpPayment({\n    url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',\n    merchantCode: '<<MERCHANT-CODE>>',\n    MerchantUniquePaymentId: '<<UNIQUE-PAYMENT-ID>>',\n    apiKey: '<<API-KEY>>',\n    fingerprint: '<<FINGERPRINT>>',\n    redirectUrl: '<<Your Redirect URL>>',\n    mode: 0,\n    displayMode: 0,\n    customerName: 'Customer Name',\n    customerReference: 'Reference 1',\n    CustomerEmail: 'sample@test.com',\n    paymentAmount: 100.00,\n    timeStamp: '<<TIMESTAMP>>'\n});\nvar result = payment.init();",
       "notes": [
         "Include the following in your code",
-        "The implementation depends on jQuery version 3.4.1 and requires jQuery to be included in your code.",
+        "The implementation depends on jQuery version 3.7.1 and requires jQuery to be included in your code.",
         "Execute the following jQuery code on the click of your ”Pay Now” button. PROGRAM DOMAIN , PROGRAM SUB-DOMAIN , and API-KEY will be provided by Zenith Payments. ( Note that these will be different for each environment i.e. Live and UAT ) For FINGERPRINT refer to the parameter details below."
       ]
     },
@@ -169,13 +169,13 @@
           "Field Name": "allowUnionPayOneOffPayment",
           "Data Type": "boolean\n(true/false)",
           "Conditional": "Conditional",
-          "Remarks": "Conditional if mode is set to 0.\nShow UnionPay option only if the option is enable for the merchant. Default is false."
+          "Remarks": "Conditional if mode is set to 0.\nShow UnionPay option only if the option is enable for the merchant. Default is true."
         },
         {
           "Field Name": "allowAliPayPlusOneOffPayment",
           "Data Type": "boolean\n(true/false)",
           "Conditional": "Conditional",
-          "Remarks": "Conditional if mode is set to 0.\nShow AliPay+ option only if the option is enable for the merchant. Default is false."
+          "Remarks": "Conditional if mode is set to 0.\nShow AliPay+ option only if the option is enable for the merchant. Default is true."
         },
         {
           "Field Name": "showFeeOnTokenising",

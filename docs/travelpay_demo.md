@@ -1,8 +1,8 @@
 # TravelPay Demo Extract
 
 - Source: `https://payuat.travelpay.com.au/demo/`
-- Extracted (UTC): `2026-01-12T02:50:45.196974Z`
-- HTML SHA256: `e04713f5287c8a17ff3481b528214ac63c655ed67f04883f22785fbb8ee28008`
+- Extracted (UTC): `2026-01-19T02:50:59.545804Z`
+- HTML SHA256: `387da4958d7ec9c8e02797050dfcef3111c0e74c0332eee21533a5285a31dae8`
 
 ## Code Sample
 
@@ -13,6 +13,7 @@
 var payment = $.zpPayment({
     url: 'https://<<PROGRAM SUB-DOMAIN>>.<<PROGRAM DOMAIN>>/online/v5',
     merchantCode: '<<MERCHANT-CODE>>',
+    MerchantUniquePaymentId: '<<UNIQUE-PAYMENT-ID>>',
     apiKey: '<<API-KEY>>',
     fingerprint: '<<FINGERPRINT>>',
     redirectUrl: '<<Your Redirect URL>>',
@@ -20,6 +21,7 @@ var payment = $.zpPayment({
     displayMode: 0,
     customerName: 'Customer Name',
     customerReference: 'Reference 1',
+    CustomerEmail: 'sample@test.com',
     paymentAmount: 100.00,
     timeStamp: '<<TIMESTAMP>>'
 });
@@ -28,7 +30,7 @@ var result = payment.init();
 
 Notes:
 - Include the following in your code
-- The implementation depends on jQuery version 3.4.1 and requires jQuery to be included in your code.
+- The implementation depends on jQuery version 3.7.1 and requires jQuery to be included in your code.
 - Execute the following jQuery code on the click of your ”Pay Now” button. PROGRAM DOMAIN , PROGRAM SUB-DOMAIN , and API-KEY will be provided by Zenith Payments. ( Note that these will be different for each environment i.e. Live and UAT ) For FINGERPRINT refer to the parameter details below.
 
 ## Input Parameters
@@ -94,10 +96,10 @@ Notes:
   - Show Slice Pay option only if the option is enable for the merchant. Default is false.
 - **allowUnionPayOneOffPayment** (boolean (true/false), Conditional)
   - Conditional if mode is set to 0.
-  - Show UnionPay option only if the option is enable for the merchant. Default is false.
+  - Show UnionPay option only if the option is enable for the merchant. Default is true.
 - **allowAliPayPlusOneOffPayment** (boolean (true/false), Conditional)
   - Conditional if mode is set to 0.
-  - Show AliPay+ option only if the option is enable for the merchant. Default is false.
+  - Show AliPay+ option only if the option is enable for the merchant. Default is true.
 - **showFeeOnTokenising** (boolean (true/false), Conditional)
   - Required if mode is set to 1.
   - Show the applicable fees for the token at the end of the process. Default is false.
