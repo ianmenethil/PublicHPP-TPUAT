@@ -1,8 +1,8 @@
 # TravelPay Demo Extract
 
 - Source: `https://payuat.travelpay.com.au/demo/`
-- Extracted (UTC): `2026-02-23T03:08:49.269519Z`
-- HTML SHA256: `f6a833d33326696d8aa062d55e1b410787e14d2f9c598b9caefae749e43ca8c2`
+- Extracted (UTC): `2026-03-02T03:05:04.375602Z`
+- HTML SHA256: `becb9056a26cffc42f71cd39b6aefebca42b8a4edb32b58c980f12f23d4cc4d2`
 
 ## Code Sample
 
@@ -125,7 +125,7 @@ Notes:
 - **companyName** (string, Optional) — Customer company name.
 - **title** (string, Optional)
   - Plugin Title.
-  - Defaults to 'Process Payment' if not provided.
+  - Defaults to 'Tokenise Account' for Mode 1 (Tokenise), otherwise 'Process Payment'.
 - **hideHeader** (boolean (true/false), Optional)
   - This will hide the program header including program logo.
   - Defaults to 'true' if not provided.

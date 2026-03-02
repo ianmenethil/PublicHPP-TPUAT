@@ -1,14 +1,14 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-02-23T03:08:49.269519Z",
+    "extracted_at": "2026-03-02T03:05:04.375602Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "f6a833d33326696d8aa062d55e1b410787e14d2f9c598b9caefae749e43ca8c2"
+    "html_sha256": "becb9056a26cffc42f71cd39b6aefebca42b8a4edb32b58c980f12f23d4cc4d2"
   },
   "sections": {
     "code_sample": {
@@ -259,7 +259,7 @@
           "Field Name": "title",
           "Data Type": "string",
           "Conditional": "Optional",
-          "Remarks": "Plugin Title.\nDefaults to 'Process Payment' if not provided."
+          "Remarks": "Plugin Title.\nDefaults to 'Tokenise Account' for Mode 1 (Tokenise), otherwise 'Process Payment'."
         },
         {
           "Field Name": "hideHeader",
