@@ -1,8 +1,8 @@
 # TravelPay Demo Extract
 
 - Source: `https://payuat.travelpay.com.au/demo/`
-- Extracted (UTC): `2026-06-22T03:18:30.397273Z`
-- HTML SHA256: `2f963ba607ec204dff6c273c595428eb6e3ac30d32c4d34d4c70b00f08572d09`
+- Extracted (UTC): `2026-07-06T03:13:36.664650Z`
+- HTML SHA256: `266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e`
 
 ## Code Sample
 
@@ -100,6 +100,9 @@ Notes:
 - **allowAliPayPlusOneOffPayment** (boolean (true/false), Conditional)
   - Conditional if mode is set to 0.
   - Show AliPay+ option only if the option is enable for the merchant. Default is true.
+- **allowWeChatOneOffPayment** (boolean (true/false), Conditional)
+  - Conditional if mode is set to 0.
+  - Show WeChat Pay option only if the option is enable for the merchant. Default is false.
 - **showFeeOnTokenising** (boolean (true/false), Conditional)
   - Required if mode is set to 1.
   - Show the applicable fees for the token at the end of the process. Default is false.

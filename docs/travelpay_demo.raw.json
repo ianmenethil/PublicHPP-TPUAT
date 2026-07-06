@@ -1,14 +1,14 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-06-22T03:18:30.397273Z",
+    "extracted_at": "2026-07-06T03:13:36.664650Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "2f963ba607ec204dff6c273c595428eb6e3ac30d32c4d34d4c70b00f08572d09"
+    "html_sha256": "266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e"
   },
   "sections": {
     "code_sample": {
@@ -176,6 +176,12 @@
           "Data Type": "boolean\n(true/false)",
           "Conditional": "Conditional",
           "Remarks": "Conditional if mode is set to 0.\nShow AliPay+ option only if the option is enable for the merchant. Default is true."
+        },
+        {
+          "Field Name": "allowWeChatOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Conditional if mode is set to 0.\nShow WeChat Pay option only if the option is enable for the merchant. Default is false."
         },
         {
           "Field Name": "showFeeOnTokenising",
