@@ -1,16 +1,16 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-07-06T03:13:36.664650Z",
+    "extracted_at": "2026-07-13T03:10:14.771945Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e",
-    "normalized_at": "2026-07-06T03:13:36.671243Z",
-    "normalized_from_html_sha256": "266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e"
+    "html_sha256": "c23592019bde948f6c848f6e9e51fdc3cc1542970d4a57f634f2a58741a82ea7",
+    "normalized_at": "2026-07-13T03:10:14.779855Z",
+    "normalized_from_html_sha256": "c23592019bde948f6c848f6e9e51fdc3cc1542970d4a57f634f2a58741a82ea7"
   },
   "sections": {
     "code_sample": {
@@ -719,6 +719,11 @@
           "Error Code": "E19",
           "Description": "Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.",
           "md_error_code": "E19"
+        },
+        {
+          "Error Code": "E21",
+          "Description": "CustomerEmail should be a valid email address.",
+          "md_error_code": "E21"
         }
       ]
     }

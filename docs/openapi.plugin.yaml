@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TravelPay / Zenith Payments - zpPayment JavaScript Plugin Schemas (v5)
-  version: 2026-07-06
+  version: 2026-07-13
   summary: OpenAPI used as a schema container for the zpPayment JavaScript plugin (not an HTTP API).
   description: |
     This OpenAPI 3.1 document is intentionally not a server-side REST API specification.
@@ -11,7 +11,7 @@ info:
     - Result payloads delivered via redirect URL query string and/or callbackUrl
     
     Source page: https://payuat.travelpay.com.au/demo/
-    HTML SHA256: 266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e
+    HTML SHA256: c23592019bde948f6c848f6e9e51fdc3cc1542970d4a57f634f2a58741a82ea7
 servers:
 paths:
 x-javascript-plugin:
@@ -622,3 +622,6 @@ components:
         -
           const: E19
           description: Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.
+        -
+          const: E21
+          description: CustomerEmail should be a valid email address.

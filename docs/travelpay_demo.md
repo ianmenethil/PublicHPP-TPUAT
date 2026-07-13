@@ -1,8 +1,8 @@
 # TravelPay Demo Extract
 
 - Source: `https://payuat.travelpay.com.au/demo/`
-- Extracted (UTC): `2026-07-06T03:13:36.664650Z`
-- HTML SHA256: `266c0833aef19c758193e7cd0d35bdd8aba019d87f1ef2af9f0d30591f28058e`
+- Extracted (UTC): `2026-07-13T03:10:14.771945Z`
+- HTML SHA256: `c23592019bde948f6c848f6e9e51fdc3cc1542970d4a57f634f2a58741a82ea7`
 
 ## Code Sample
 
@@ -278,4 +278,5 @@ Notes:
 - **E17** — CustomerEmail can not be empty(V4 onwards).
 - **E18** — DepartureDate is required for Slice Pay.
 - **E19** — Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.
+- **E21** — CustomerEmail should be a valid email address.
 
