@@ -1,8 +1,8 @@
 # TravelPay Demo Extract
 
 - Source: `https://payuat.travelpay.com.au/demo/`
-- Extracted (UTC): `2026-08-24T02:32:09.669525Z`
-- HTML SHA256: `9ad8af4f195c572df7a37bc34afbd716af5f515aede79a4c33688a57f5de6759`
+- Extracted (UTC): `2026-08-31T02:22:35.757488Z`
+- HTML SHA256: `5c3d43799120b5fb48d983c2590efbeb1be6beab62d4b84e0a2eab6aed9ed9a6`
 
 ## Code Sample
 
@@ -73,6 +73,12 @@ Notes:
   - Required if mode is set to 0 or 2.
   - Returns applicable fee if provided with mode 1.
 - **PaymentAmountLabel** (string, Optional) — Custom label to override default payment amount display text
+- **allowCardOneOffPayment** (boolean (true/false), Conditional)
+  - Required if mode is set to 0 or 2.
+  - Show card option only if the option is enable for the merchant. Default is true.
+- **allowCardTokenisePayment** (boolean (true/false), Conditional)
+  - Required if mode is set to 0 or 2.
+  - Show card tokenise option only if the option is enable for the merchant. Default is true.
 - **allowBankAcOneOffPayment** (boolean (true/false), Conditional)
   - Required if mode is set to 0 or 2.
   - Show bank account option only if the option is enable for the merchant. Default is false.
@@ -279,4 +285,5 @@ Notes:
 - **E18** — DepartureDate is required for Slice Pay.
 - **E19** — Invalid Timestamp. Timestamp needs to be in UTC ISO 8601 format.
 - **E21** — CustomerEmail should be a valid email address.
+- **E22** — No payment method available. Please contact Administrator
 

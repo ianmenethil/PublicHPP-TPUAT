@@ -1,16 +1,16 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-08-24T02:32:09.669525Z",
+    "extracted_at": "2026-08-31T02:22:35.757488Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "9ad8af4f195c572df7a37bc34afbd716af5f515aede79a4c33688a57f5de6759",
-    "normalized_at": "2026-08-24T02:32:09.678903Z",
-    "normalized_from_html_sha256": "9ad8af4f195c572df7a37bc34afbd716af5f515aede79a4c33688a57f5de6759"
+    "html_sha256": "5c3d43799120b5fb48d983c2590efbeb1be6beab62d4b84e0a2eab6aed9ed9a6",
+    "normalized_at": "2026-08-31T02:22:35.766414Z",
+    "normalized_from_html_sha256": "5c3d43799120b5fb48d983c2590efbeb1be6beab62d4b84e0a2eab6aed9ed9a6"
   },
   "sections": {
     "code_sample": {
@@ -140,6 +140,20 @@
           "Conditional": "Optional",
           "Remarks": "Custom label to override default payment amount display text",
           "md_field": "PaymentAmountLabel"
+        },
+        {
+          "Field Name": "allowCardOneOffPayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nShow card option only if the option is enable for the merchant. Default is true.",
+          "md_field": "allowCardOneOffPayment"
+        },
+        {
+          "Field Name": "allowCardTokenisePayment",
+          "Data Type": "boolean\n(true/false)",
+          "Conditional": "Conditional",
+          "Remarks": "Required if mode is set to 0 or 2.\nShow card tokenise option only if the option is enable for the merchant. Default is true.",
+          "md_field": "allowCardTokenisePayment"
         },
         {
           "Field Name": "allowBankAcOneOffPayment",
@@ -724,6 +738,11 @@
           "Error Code": "E21",
           "Description": "CustomerEmail should be a valid email address.",
           "md_error_code": "E21"
+        },
+        {
+          "Error Code": "E22",
+          "Description": "No payment method available. Please contact Administrator",
+          "md_error_code": "E22"
         }
       ]
     }
