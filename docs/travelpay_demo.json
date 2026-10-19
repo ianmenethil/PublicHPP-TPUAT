@@ -1,16 +1,16 @@
 {
   "metadata": {
     "url": "https://payuat.travelpay.com.au/demo/",
-    "extracted_at": "2026-10-12T08:49:22.905444Z",
+    "extracted_at": "2026-10-19T02:23:12.080000Z",
     "sections": [
       "Code Sample",
       "Input Parameters",
       "Return Parameters",
       "Error Codes"
     ],
-    "html_sha256": "76bcccc462f9021bfb5e12e2b5a4bc3e029fea83831f5076265d95c2bc86f110",
-    "normalized_at": "2026-10-12T08:49:22.915911Z",
-    "normalized_from_html_sha256": "76bcccc462f9021bfb5e12e2b5a4bc3e029fea83831f5076265d95c2bc86f110"
+    "html_sha256": "bf667e00789d7f9a260021149a9378abb0ae7d10926e1afa67780247a7e7fbca",
+    "normalized_at": "2026-10-19T02:23:12.090395Z",
+    "normalized_from_html_sha256": "bf667e00789d7f9a260021149a9378abb0ae7d10926e1afa67780247a7e7fbca"
   },
   "sections": {
     "code_sample": {
